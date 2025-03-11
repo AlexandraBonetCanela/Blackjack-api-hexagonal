@@ -81,15 +81,15 @@ public class GameServiceImpl implements GameService{
     }
 
     private GameResponse toGameResponse(Game game) {
-        return GameResponse.builder()
-                .id(game.getId())
-                .player(game.getPlayer())
-                .playerHand(game.getPlayerHand())
-                .dealerHand(maskDealerCard(game.getDealerHand(), game.getStatus()))
-                .moneyBet(game.getMoneyBet())
-                .status(game.getStatus())
-                .gameResult(game.getGameResult())
-                .build();
+
+        return new GameResponse(
+                game.getId(),
+                game.getPlayer(),
+                game.getPlayerHand(),
+                maskDealerCard(game.getDealerHand(), game.getStatus()),
+                game.getMoneyBet(),
+                game.getStatus(),
+                game.getGameResult());
     }
 
     private List<Card> maskDealerCard(List<Card> dealerHand, GameStatus gameStatus){
