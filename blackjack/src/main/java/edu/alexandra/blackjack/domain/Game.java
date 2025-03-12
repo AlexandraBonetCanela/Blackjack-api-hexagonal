@@ -35,6 +35,18 @@ public class Game {
     private GameStatus status;
     private GameResult gameResult;
 
+    public Game(String id, Player player, BigDecimal moneyBet, GameStatus status) {
+
+        this.id = id;
+        this.player = player;
+        this.deck = new Deck();
+        this.playerHand = new ArrayList<>();
+        this.dealerHand = new ArrayList<>();
+        this.moneyBet = moneyBet;
+        this.status = status;
+
+    }
+
     public Game dealInitialCards(){
 
         if (deck.getCards().size() >= 4) {

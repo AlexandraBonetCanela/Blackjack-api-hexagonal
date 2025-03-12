@@ -26,19 +26,17 @@ public class GameServiceImpl implements GameService{
     @Override
     public Mono<GameResponse> createGame(CreateGameRequest newGame) {
 
-        Game game = Game.builder()
-                .id(UUID.randomUUID().toString())
-                .moneyBet(newGame.getMoneyBet())
-                .status(GameStatus.STARTED)
-                .build()
-                .dealInitialCards();
-
         return playerService.getOrCreatePlayer(newGame.getPlayerName())
-                .flatMap(player -> {
-                    game.setPlayer(player);
-                    return gameRepository.save(game);
-                })
-                .map(this::toGameResponse);
+                .map(player -> new Game(
+                        UUID.randomUUID().toString(),
+                        player,
+                        newGame.getMoneyBet(),
+                        GameStatus.STARTED
+                ))
+                .map(game -> {
+                    game.dealInitialCards();
+                    return toGameResponse(game);
+                });
     }
 
 
