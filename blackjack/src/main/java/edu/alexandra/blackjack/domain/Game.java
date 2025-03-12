@@ -11,28 +11,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 @ToString
 @EqualsAndHashCode
-@SuperBuilder(toBuilder = true)
-@NoArgsConstructor(force = true)
 @AllArgsConstructor
 public class Game {
 
     private String id;
     private Player player;
-
-    @Builder.Default
-    private Deck deck = new Deck();
-
-    @Builder.Default
-    private List<Card> playerHand = new ArrayList<>();
-
-    @Builder.Default
-    private List<Card> dealerHand = new ArrayList<>();
-
+    private Deck deck;
+    private List<Card> playerHand;
+    private List<Card> dealerHand;
     private BigDecimal moneyBet;
+
+    @Setter
     private GameStatus status;
+
+    @Setter
     private GameResult gameResult;
 
     public Game(String id, Player player, BigDecimal moneyBet, GameStatus status) {
@@ -47,15 +41,13 @@ public class Game {
 
     }
 
-    public Game dealInitialCards(){
+    public void dealInitialCards(){
 
-        if (deck.getCards().size() >= 4) {
-            return this.toBuilder()
-                    .playerHand(List.of(deck.getCard(), deck.getCard()))
-                    .dealerHand(List.of(deck.getCard(), deck.getCard()))
-                    .build();
-        }
-        return this;
+        playerHand.add(deck.getCard());
+        playerHand.add(deck.getCard());
+        dealerHand.add(deck.getCard());
+        dealerHand.add(deck.getCard());
+
     }
 
     public static int getCardScore(Card card){
@@ -96,7 +88,7 @@ public class Game {
         }
 
         switch (move){
-            case MoveType.STAND :
+            case MoveType.STAND:
                 stand();
                 break;
             case MoveType.HIT:
